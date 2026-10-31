@@ -1,9 +1,11 @@
 import json
 import os
 import requests
+from dotenv import load_dotenv
 
 CACHE = 'storage/geo_cache.json'
 
+load_dotenv()
 
 def _load():
     try:
@@ -15,7 +17,7 @@ def _load():
 
 def _save(cache):
     with open(CACHE, 'w') as f:
-        json.dump(cache, f)
+        json.dump(cache, f, indent=2)
 
 
 def locate(ips):
