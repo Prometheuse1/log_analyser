@@ -1,6 +1,4 @@
-import logging
 import os
-import sys
 
 from logger import setup
 
@@ -20,9 +18,7 @@ from ingestion import raw
 from process.extract_transforme import extract_from_row
 from process.geolocation import locate
 from serving.report import show_dashboard
-from storage import db
-
-log = logging.getLogger('main')
+from storage.store import save_events
 
 
 def tally(events, key):
@@ -34,25 +30,24 @@ def tally(events, key):
 
 
 if __name__ == '__main__':
-    print('Reading logs...')
+    print('Lecture des logs...')
     events = [e for e in map(extract_from_row, raw.toRows('./data')) if e]
-    ip_counts = tally(events, lambda e: e['ip'])
-    print(f'{sum(ip_counts.values())} failed attempts from {len(ip_counts)} IPs')
+    failed = [e for e in events if e['status'] == 'failed']
+    success = [e for e in events if e['status'] == 'success']
 
-    print('Geolocating...')
+    ip_counts = tally(failed, lambda e: e['ip'])
+    success_users = tally(success, lambda e: e['user'])
+    invalid_users = tally([e for e in failed if e['invalid']], lambda e: e['user'])
+    print(f'{sum(ip_counts.values())} tentatives échouées ({len(ip_counts)} IP), '
+          f'{sum(success_users.values())} connexion(s) réussie(s), '
+          f'{sum(invalid_users.values())} avec invalid user')
+
+    print('Géolocalisation...')
     geo = locate(ip_counts)
+    save_events(events, geo)
+    by_country = {}
+    for ip, n in ip_counts.items():
+        c = geo.get(ip, 'unknown')
+        by_country[c] = by_country.get(c, 0) + n
 
-    print('Saving to PostgreSQL...')
-    try:
-        with db.connect() as conn:
-            db.init(conn)
-            db.save_events(conn, events)
-            db.save_geo(conn, geo)
-            stats = (db.country_counts(conn), db.unique_ips(conn), db.day_counts(conn),
-                     db.hour_counts(conn), db.user_counts(conn))
-    except db.Error:
-        log.exception('Database error')
-        print('Database error, see logs/errors.log')
-        sys.exit(1)
-
-    show_dashboard(*stats)
+    show_dashboard(by_country, success_users, invalid_users)

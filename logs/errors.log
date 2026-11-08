@@ -40,3 +40,45 @@ psycopg.OperationalError: connection failed: connection to server at "127.0.0.1"
 Multiple connection attempts failed. All failures were:
 - host: 'localhost', port: '5432', hostaddr: '::1': connection failed: connection to server at "::1", port 5432 failed: FATAL:  password authentication failed for user "postgres"
 - host: 'localhost', port: '5432', hostaddr: '127.0.0.1': connection failed: connection to server at "127.0.0.1", port 5432 failed: FATAL:  password authentication failed for user "postgres"
+2026-11-08 21:49:52,461 | ERROR    | main:54 | Database error
+Traceback (most recent call last):
+  File "e:\Python\log_analyser\main.py", line 47, in <module>
+    with db.connect() as conn:
+         ~~~~~~~~~~^^
+  File "e:\Python\log_analyser\storage\db.py", line 29, in connect
+    return psycopg.connect(DSN)       # `with connect() as conn` commits and closes
+           ~~~~~~~~~~~~~~~^^^^^
+  File "E:\Python\log_analyser\.venv\Lib\site-packages\psycopg\connection.py", line 134, in connect
+    raise new_ex.with_traceback(None)
+psycopg.OperationalError: connection failed: connection to server at "127.0.0.1", port 5432 failed: FATAL:  password authentication failed for user "postgres"
+Multiple connection attempts failed. All failures were:
+- host: 'localhost', port: '5432', hostaddr: '::1': connection failed: connection to server at "::1", port 5432 failed: FATAL:  password authentication failed for user "postgres"
+- host: 'localhost', port: '5432', hostaddr: '127.0.0.1': connection failed: connection to server at "127.0.0.1", port 5432 failed: FATAL:  password authentication failed for user "postgres"
+2026-11-08 21:52:23,662 | ERROR    | main:54 | Database error
+Traceback (most recent call last):
+  File "e:\Python\log_analyser\main.py", line 47, in <module>
+    with db.connect() as conn:
+         ~~~~~~~~~~^^
+  File "e:\Python\log_analyser\storage\db.py", line 29, in connect
+    return psycopg.connect(DSN)       # `with connect() as conn` commits and closes
+           ~~~~~~~~~~~~~~~^^^^^
+  File "E:\Python\log_analyser\.venv\Lib\site-packages\psycopg\connection.py", line 134, in connect
+    raise new_ex.with_traceback(None)
+psycopg.OperationalError: connection failed: connection to server at "127.0.0.1", port 5432 failed: FATAL:  database "log_analyser" does not exist
+Multiple connection attempts failed. All failures were:
+- host: 'localhost', port: '5432', hostaddr: '::1': connection failed: connection to server at "::1", port 5432 failed: FATAL:  database "log_analyser" does not exist
+- host: 'localhost', port: '5432', hostaddr: '127.0.0.1': connection failed: connection to server at "127.0.0.1", port 5432 failed: FATAL:  database "log_analyser" does not exist
+2026-11-08 21:52:51,253 | ERROR    | main:54 | Database error
+Traceback (most recent call last):
+  File "e:\Python\log_analyser\main.py", line 47, in <module>
+    with db.connect() as conn:
+         ~~~~~~~~~~^^
+  File "e:\Python\log_analyser\storage\db.py", line 29, in connect
+    return psycopg.connect(DSN)       # `with connect() as conn` commits and closes
+           ~~~~~~~~~~~~~~~^^^^^
+  File "E:\Python\log_analyser\.venv\Lib\site-packages\psycopg\connection.py", line 134, in connect
+    raise new_ex.with_traceback(None)
+psycopg.OperationalError: connection failed: connection to server at "127.0.0.1", port 5432 failed: FATAL:  database "log_analyser" does not exist
+Multiple connection attempts failed. All failures were:
+- host: 'localhost', port: '5432', hostaddr: '::1': connection failed: connection to server at "::1", port 5432 failed: FATAL:  database "log_analyser" does not exist
+- host: 'localhost', port: '5432', hostaddr: '127.0.0.1': connection failed: connection to server at "127.0.0.1", port 5432 failed: FATAL:  database "log_analyser" does not exist
