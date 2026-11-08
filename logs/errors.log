@@ -1,0 +1,42 @@
+2026-11-08 21:39:57,270 | CRITICAL | uncaught:24 | Uncaught exception
+Traceback (most recent call last):
+  File "e:\Python\log_analyser\main.py", line 11, in <module>
+    from storage import db
+  File "e:\Python\log_analyser\storage\db.py", line 3, in <module>
+    import psycopg
+ModuleNotFoundError: No module named 'psycopg'
+2026-11-08 21:40:55,995 | CRITICAL | uncaught:24 | Uncaught exception
+Traceback (most recent call last):
+  File "e:\Python\log_analyser\main.py", line 11, in <module>
+    from storage import db
+  File "e:\Python\log_analyser\storage\db.py", line 3, in <module>
+    import psycopg
+  File "E:\Python\log_analyser\.venv\Lib\site-packages\psycopg\__init__.py", line 9, in <module>
+    from . import pq  # noqa: F401 import early to stabilize side effects
+    ^^^^^^^^^^^^^^^^
+  File "E:\Python\log_analyser\.venv\Lib\site-packages\psycopg\pq\__init__.py", line 114, in <module>
+    import_from_libpq()
+    ~~~~~~~~~~~~~~~~~^^
+  File "E:\Python\log_analyser\.venv\Lib\site-packages\psycopg\pq\__init__.py", line 108, in import_from_libpq
+            raise ImportError(f"""\
+    ...<2 lines>...
+    {sattempts}""")
+ImportError: no pq wrapper available.
+Attempts made:
+- couldn't import psycopg 'c' implementation: No module named 'psycopg_c'
+- couldn't import psycopg 'binary' implementation: No module named 'psycopg_binary'
+- couldn't import psycopg 'python' implementation: libpq library not found
+2026-11-08 21:43:03,087 | ERROR    | main:42 | Database error
+Traceback (most recent call last):
+  File "e:\Python\log_analyser\main.py", line 35, in <module>
+    with db.connect() as conn:
+         ~~~~~~~~~~^^
+  File "e:\Python\log_analyser\storage\db.py", line 33, in connect
+    return psycopg.connect(DSN)       # `with connect() as conn` commits and closes
+           ~~~~~~~~~~~~~~~^^^^^
+  File "E:\Python\log_analyser\.venv\Lib\site-packages\psycopg\connection.py", line 134, in connect
+    raise new_ex.with_traceback(None)
+psycopg.OperationalError: connection failed: connection to server at "127.0.0.1", port 5432 failed: FATAL:  password authentication failed for user "postgres"
+Multiple connection attempts failed. All failures were:
+- host: 'localhost', port: '5432', hostaddr: '::1': connection failed: connection to server at "::1", port 5432 failed: FATAL:  password authentication failed for user "postgres"
+- host: 'localhost', port: '5432', hostaddr: '127.0.0.1': connection failed: connection to server at "127.0.0.1", port 5432 failed: FATAL:  password authentication failed for user "postgres"

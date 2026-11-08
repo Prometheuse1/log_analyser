@@ -8,11 +8,7 @@ def _ranked(d):
     return sorted(d.items(), key=lambda x: x[1], reverse=True)
 
 
-def _country_donut(ax, ip_counts, geo, top=8):
-    by_country = {}
-    for ip, n in ip_counts.items():
-        c = geo.get(ip, 'unknown')
-        by_country[c] = by_country.get(c, 0) + n
+def _country_donut(ax, by_country, top=8):
     total = sum(by_country.values())
     ranked = _ranked(by_country)
     slices = ranked[:top]
@@ -61,13 +57,13 @@ def _user_barh(ax, user_counts, top=10):
     ax.set_title('Most targeted usernames')
 
 
-def show_dashboard(ip_counts, geo, day_counts, hour_counts, user_counts,
+def show_dashboard(by_country, n_ips, day_counts, hour_counts, user_counts,
                    out='serving/report.png'):
     """4 charts in one window; also saved as a single PNG."""
     fig, axes = plt.subplots(2, 2, figsize=(14, 9))
-    fig.suptitle(f'Failed SSH logins: {sum(ip_counts.values())} attempts '
-                 f'from {len(ip_counts)} IPs', fontsize=14)
-    _country_donut(axes[0][0], ip_counts, geo)
+    fig.suptitle(f'Failed SSH logins: {sum(by_country.values())} attempts '
+                 f'from {n_ips} IPs', fontsize=14)
+    _country_donut(axes[0][0], by_country)
     _day_line(axes[0][1], day_counts)
     _hour_bars(axes[1][0], hour_counts)
     _user_barh(axes[1][1], user_counts)
